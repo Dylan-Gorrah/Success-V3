@@ -18,11 +18,10 @@ html {
 body {
   background: #FBF7F4;
   color: #232323;
-  font-family: 'Manrope', sans-serif;
+  font-family: 'Inter', sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 300;
 }
 
 /* Selection */
@@ -31,9 +30,9 @@ body {
   color: #FBF7F4;
 }
 
-/* Thin, Premium Scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -47,6 +46,16 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #685D54;
+}
+
+/* Shimmer animation for button */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 /* Enhanced backdrop-filter support for better glass effect */
@@ -75,70 +84,4 @@ nav {
   nav {
     background: rgba(251, 247, 244, 0.95) !important;
   }
-}
-
-/* Premium thin borders everywhere */
-input,
-textarea,
-select,
-button {
-  border-width: 1px;
-}
-
-/* Subtle focus states */
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none;
-  border-color: #685D54;
-  box-shadow: 0 0 0 1px rgba(104, 93, 84, 0.1);
-}
-
-/* Smooth transitions */
-* {
-  transition-property: border-color, background-color, color, box-shadow;
-  transition-duration: 200ms;
-  transition-timing-function: ease-in-out;
-}
-
-/* Override transitions for animations */
-[class*="animate"],
-[class*="motion"] {
-  transition: none;
-}
-
-/* Premium hover effects on cards */
-.card-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px rgba(35, 35, 35, 0.1);
-}
-
-/* Thin line separator utility */
-.separator-line {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(35, 35, 35, 0.1), transparent);
-}
-
-/* Text rendering optimization */
-h1, h2, h3, h4, h5, h6 {
-  text-rendering: optimizeLegibility;
-  font-feature-settings: 'kern' 1;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Prevent layout shift */
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-}
-
-/* Loading state for images */
-img[loading="lazy"] {
-  background: #E5DED2;
 }

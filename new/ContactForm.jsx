@@ -52,7 +52,7 @@ MESSAGE:
 ${formData.message}
 
 ---
-Reply to start conversation!`.trim()
+Reply to start the conversation!`.trim()
 
     const whatsappNumber = '27677020221'
     const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
@@ -62,6 +62,13 @@ Reply to start conversation!`.trim()
       setFormData({ name: '', email: '', phone: '', projectType: '', budget: '', message: '' })
       setIsSubmitting(false)
     }, 1000)
+  }
+
+  const openWhatsAppDirect = () => {
+    const whatsappNumber = '27677020221'
+    const message = 'Hi! I have some questions about your services.'
+    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
+    window.open(whatsappURL, '_blank')
   }
 
   return (
@@ -78,7 +85,7 @@ Reply to start conversation!`.trim()
             Let's Talk
           </h2>
           <p className="text-xl text-mocha max-w-2xl mx-auto font-light">
-            Fill out form and we'll respond within an hour.
+            Fill out the form and we'll respond within an hour.
           </p>
         </motion.div>
 
@@ -354,7 +361,7 @@ Reply to start conversation!`.trim()
                       Need Help?
                     </h3>
                     <p className="text-sm text-mocha font-light leading-relaxed">
-                      If pricing or anything is confusing, don't worry! You can contact me directly on WhatsApp by filling in form above, or click the button below to chat now.
+                      If pricing or anything is confusing, don't worry! You can contact me directly on WhatsApp by filling in the form above, or click the button below to chat now.
                     </p>
                     
                     <motion.button

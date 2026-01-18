@@ -29,7 +29,7 @@ const steps = [
     number: '04',
     title: 'Launch',
     description: 'We deploy and support your success from day one.',
-    image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop',
+    image: 'https://images.unsplash.com/photo-1�680224643617-6fe59f34ffaa?w=800&h=600&fit=crop',
   },
 ]
 

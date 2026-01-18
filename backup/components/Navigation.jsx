@@ -16,8 +16,8 @@ export default function Navigation() {
 
   // Smooth transition values based on scroll
   const isScrolled = scrollY > 20
-  const blurAmount = Math.min(20 + (scrollY / 10), 40)
-  const bgOpacity = Math.min(0.4 + (scrollY / 1000), 0.70)
+  const blurAmount = Math.min(20 + (scrollY / 10), 40) // Gradually increases blur
+  const bgOpacity = Math.min(0.4 + (scrollY / 1000), 0.65) // Gradually increases opacity
 
   const navLinks = [
     { name: 'Services', href: '#services' },
@@ -29,8 +29,7 @@ export default function Navigation() {
     <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
-      // Positioned below the marquee (marquee is 36px tall)
-      className="fixed top-[36px] left-0 right-0 z-50"
+      className="fixed top-0 left-0 right-0 z-50"
       style={{
         background: `rgba(251, 247, 244, ${bgOpacity})`,
         backdropFilter: `blur(${blurAmount}px) saturate(180%)`,
@@ -42,12 +41,22 @@ export default function Navigation() {
         transition: 'box-shadow 0.3s ease, border-bottom 0.3s ease',
       }}
     >
-      {/* Subtle gradient overlay */}
+      {/* Subtle gradient overlay - ALWAYS present */}
       <div 
         className="absolute inset-0 pointer-events-none"
         style={{
           background: 'linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 100%)',
           mixBlendMode: 'overlay',
+        }}
+      />
+
+      {/* Optional: Subtle noise for texture */}
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-20"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='4' numOctaves='1' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          backgroundSize: '100px 100px',
+          mixBlendMode: 'soft-light',
         }}
       />
       
@@ -68,17 +77,21 @@ export default function Navigation() {
               <a
                 key={link.name}
                 href={link.href}
-                className="text-mocha hover:text-charcoal transition-colors duration-200 font-medium text-sm relative group"
+                className="text-mocha hover:text-charcoal transition-colors duration-200 font-medium relative"
               >
                 {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-charcoal transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
             <a
               href="#contact"
-              className="relative bg-charcoal text-milk px-6 py-2.5 rounded-full hover:bg-mocha transition-all duration-200 font-medium text-sm shadow-md overflow-hidden border border-charcoal/5"
+              className="relative bg-charcoal/90 text-milk px-6 py-2.5 rounded-full hover:bg-mocha transition-all duration-200 font-medium shadow-lg overflow-hidden"
             >
+              {/* Glass effect on button too */}
               <span className="relative z-10">Let's Talk</span>
+              <div 
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+                style={{ transform: 'translateX(-100%)', animation: 'shimmer 3s infinite' }}
+              />
             </a>
           </div>
 
@@ -111,7 +124,7 @@ export default function Navigation() {
             ))}
             <a
               href="#contact"
-              className="block bg-charcoal text-milk px-6 py-2.5 rounded-full hover:bg-mocha transition-all duration-200 font-medium text-center shadow-md"
+              className="block bg-charcoal/90 text-milk px-6 py-2.5 rounded-full hover:bg-mocha transition-all duration-200 font-medium text-center shadow-lg"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Let's Talk

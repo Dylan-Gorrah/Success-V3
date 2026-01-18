@@ -3,9 +3,10 @@ import { motion } from 'framer-motion'
 import Hero from './components/Hero'
 import Services from './components/Services'
 import Projects from './components/Projects'
-import Process from './components/Process'  // ← ADD THIS
+import Process from './components/Process'
 import ContactForm from './components/ContactForm'
 import Navigation from './components/Navigation'
+import ScrollingMarquee from './components/ScrollingMarquee'
 
 function App() {
   const [mounted, setMounted] = useState(false)
@@ -18,13 +19,14 @@ function App() {
 
   return (
     <div className="relative min-h-screen bg-milk">
+      <ScrollingMarquee />
       <Navigation />
       
       <main className="relative">
         <Hero />
         <Services />
         <Projects />
-        <Process />  {/* ← ADD THIS */}
+        <Process />
         <ContactForm />
       </main>
       
