@@ -60,7 +60,7 @@ function ProcessStep({ step, index, isEven }) {
   const Icon = step.icon
 
   return (
-    <div ref={ref} className="relative min-h-screen flex items-center py-20">
+    <div ref={ref} className="relative min-h-screen flex items-center py-20 snap-section">
       <div className="max-w-7xl mx-auto w-full px-6">
         <div className={`grid lg:grid-cols-2 gap-12 items-center ${isEven ? '' : 'lg:grid-flow-dense'}`}>
           {/* Image Side */}
@@ -131,7 +131,7 @@ function ProcessStep({ step, index, isEven }) {
 
 export default function Process() {
   return (
-    <section id="process" className="relative bg-milk">
+    <section id="process" className="relative bg-milk snap-section">
       {/* Section Header */}
       <div className="max-w-7xl mx-auto px-6 pt-32 pb-12">
         <motion.div

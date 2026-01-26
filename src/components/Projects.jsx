@@ -88,16 +88,16 @@ export default function Projects() {
   const nextProject = getProject(1)
 
   return (
-    <section id="projects" className="py-16 md:py-32 px-4 md:px-6 bg-oat/30" ref={ref}>
+    <section id="projects" className="py-16 md:py-20 px-4 md:px-6 bg-oat/30 snap-section" ref={ref}>
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="mb-8 md:mb-16 text-center"
+          className="mb-6 md:mb-12 text-center"
         >
-          <h2 className="text-3xl md:text-7xl font-display font-bold text-charcoal mb-3 md:mb-6 tracking-tight">
+          <h2 className="text-3xl md:text-6xl font-display font-bold text-charcoal mb-3 md:mb-5 tracking-tight">
             Selected Work
           </h2>
           <p className="text-base md:text-xl text-mocha max-w-2xl mx-auto font-light">
@@ -106,9 +106,9 @@ export default function Projects() {
         </motion.div>
 
         {/* Desktop: Carousel + Phone Mockup Layout */}
-        <div className="hidden lg:grid lg:grid-cols-12 gap-8 items-center">
-          {/* Left: Carousel (Smaller, 7 columns) */}
-          <div className="lg:col-span-7">
+        <div className="hidden lg:grid lg:grid-cols-12 gap-6 items-center">
+          {/* Left: Carousel (Smaller, 8 columns) */}
+          <div className="lg:col-span-8">
             <div className="flex items-center gap-4">
               {/* Previous Preview */}
               <motion.a
@@ -168,7 +168,7 @@ export default function Projects() {
                     className="block bg-white rounded-xl shadow-xl overflow-hidden cursor-pointer group"
                   >
                     {/* Image */}
-                    <div className="relative h-64 overflow-hidden">
+                    <div className="relative h-48 overflow-hidden">
                       <motion.img
                         src={currentProject.image}
                         alt={currentProject.title}
@@ -246,20 +246,20 @@ export default function Projects() {
             </div>
           </div>
 
-          {/* Right: Phone Mockup (5 columns) */}
+          {/* Right: Phone Mockup (4 columns) */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="lg:col-span-5"
+            className="lg:col-span-4"
           >
             <div className="relative">
               {/* Phone Frame */}
-              <div className="relative mx-auto w-72">
+              <div className="relative mx-auto w-56">
                 {/* Phone Bezel */}
                 <div className="relative bg-charcoal rounded-[3rem] p-3 shadow-2xl">
                   {/* Notch */}
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-6 bg-charcoal rounded-b-3xl z-10"></div>
+                  <div className="absolute top-0 left-1/2 -translate-x-1/2 w-28 h-5 bg-charcoal rounded-b-3xl z-10"></div>
                   
                   {/* Screen */}
                   <div className="relative bg-white rounded-[2.5rem] overflow-hidden aspect-[9/19.5]">

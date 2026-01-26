@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, Phone, MessageCircle } from 'lucide-react'
 
 export default function Navigation() {
   const [scrollY, setScrollY] = useState(0)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,7 +27,8 @@ export default function Navigation() {
   ]
 
   return (
-    <motion.nav
+    <>
+      <motion.nav
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       // Positioned below the marquee (marquee is 36px tall)
@@ -63,7 +65,7 @@ export default function Navigation() {
           </motion.a>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-10">
+          <div className="hidden md:flex items-center space-x-6">
             {navLinks.map((link) => (
               <a
                 key={link.name}
@@ -74,12 +76,33 @@ export default function Navigation() {
                 <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-charcoal transition-all duration-300 group-hover:w-full" />
               </a>
             ))}
-            <a
-              href="#contact"
+            
+            {/* Phone Contact Section */}
+            <div className="flex items-center space-x-3 pl-6 border-l border-charcoal/20">
+              <a
+                href="tel:0677020221"
+                className="flex items-center space-x-2 text-mocha hover:text-charcoal transition-colors duration-200 group"
+              >
+                <Phone size={18} className="group-hover:scale-110 transition-transform" />
+                <span className="font-medium text-sm">0677020221</span>
+              </a>
+              <a
+                href="https://wa.me/0677020221"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-600 hover:text-green-700 transition-colors duration-200"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle size={18} className="hover:scale-110 transition-transform" />
+              </a>
+            </div>
+            
+            <button
+              onClick={() => setIsModalOpen(true)}
               className="relative bg-charcoal text-milk px-6 py-2.5 rounded-full hover:bg-mocha transition-all duration-200 font-medium text-sm shadow-md overflow-hidden border border-charcoal/5"
             >
               <span className="relative z-10">Let's Talk</span>
-            </a>
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -109,16 +132,103 @@ export default function Navigation() {
                 {link.name}
               </a>
             ))}
-            <a
-              href="#contact"
+            
+            {/* Mobile Phone Contact Section */}
+            <div className="flex items-center justify-between py-3 border-t border-charcoal/20">
+              <a
+                href="tel:0677020221"
+                className="flex items-center space-x-2 text-mocha hover:text-charcoal transition-colors duration-200"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Phone size={18} />
+                <span className="font-medium text-sm">0677020221</span>
+              </a>
+              <a
+                href="https://wa.me/0677020221"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-green-600 hover:text-green-700 transition-colors duration-200"
+                aria-label="WhatsApp"
+              >
+                <MessageCircle size={18} />
+              </a>
+            </div>
+            
+            <button
+              onClick={() => {
+                setIsModalOpen(true)
+                setIsMobileMenuOpen(false)
+              }}
               className="block bg-charcoal text-milk px-6 py-2.5 rounded-full hover:bg-mocha transition-all duration-200 font-medium text-center shadow-md"
-              onClick={() => setIsMobileMenuOpen(false)}
             >
               Let's Talk
-            </a>
+            </button>
           </motion.div>
         )}
       </div>
     </motion.nav>
+
+    {/* Modal */}
+    {isModalOpen && (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center"
+        onClick={() => setIsModalOpen(false)}
+      >
+        {/* Blur Background */}
+        <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" />
+        
+        {/* Modal Card */}
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          className="relative bg-white rounded-2xl p-8 max-w-md w-full mx-6 shadow-2xl border border-charcoal/10"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Close Button */}
+          <button
+            onClick={() => setIsModalOpen(false)}
+            className="absolute top-4 right-4 text-mocha hover:text-charcoal transition-colors"
+          >
+            <X size={24} />
+          </button>
+          
+          {/* Modal Content */}
+          <div className="text-center space-y-6">
+            <h3 className="text-2xl font-display font-bold text-charcoal">
+              Let's Talk
+            </h3>
+            <p className="text-mocha">
+              Ready to start your next project? Get in touch with us and let's create something amazing together.
+            </p>
+            
+            {/* Contact Options */}
+            <div className="space-y-4">
+              <a
+                href="tel:0677020221"
+                className="flex items-center justify-center space-x-3 text-charcoal hover:text-mocha transition-colors p-3 rounded-lg border border-charcoal/10 hover:border-charcoal/20"
+              >
+                <Phone size={20} />
+                <span className="font-medium">0677020221</span>
+              </a>
+              
+              <a
+                href="https://wa.me/0677020221"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center space-x-3 text-green-600 hover:text-green-700 transition-colors p-3 rounded-lg border border-green-600/20 hover:border-green-600/30"
+              >
+                <MessageCircle size={20} />
+                <span className="font-medium">Chat on WhatsApp</span>
+              </a>
+            </div>
+            
+            <p className="text-sm text-taupe">
+              We'll get back to you within 24 hours
+            </p>
+          </div>
+        </motion.div>
+      </div>
+    )}
+    </>
   )
 }

@@ -3,13 +3,45 @@ import { ArrowRight } from 'lucide-react'
 
 export default function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center px-6 pt-32 pb-20">
+    <section id="hero" className="relative min-h-screen flex items-center px-6 pt-32 pb-20 snap-section">
+      {/* SOTD Score Box - Independent Background Element */}
+      <motion.div
+        initial={{ opacity: 0, x: 30 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.8, delay: 0.3 }}
+        className="absolute top-[7.5rem] right-1 sm:right-6 md:right-8 lg:right-10 xl:right-10 z-10 scale-69"
+      >
+        <div className="inline-flex flex-col bg-white border border-charcoal rounded-lg overflow-hidden">
+          {/* Top Section */}
+          <div className="bg-charcoal px-3 py-1.5 text-center border-b border-charcoal/5">
+            <p className="text-milk font-bold text-xs tracking-[0.2em] uppercase">
+              From
+            </p>
+          </div>
+          
+          {/* Bottom Section */}
+          <div className="px-3.5 py-3 text-center bg-gradient-to-b from-white to-oat/20">
+            <div className="flex items-baseline justify-center gap-1">
+              <span className="text-2xl font-display font-bold text-charcoal tracking-tight">
+                R600
+              </span>
+              <span className="text-sm font-light text-mocha mb-1">
+                
+              </span>
+            </div>
+            <p className="text-xs text-taupe mt-3 font-light tracking-wide">
+              Contact Now!
+            </p>
+          </div>
+        </div>
+      </motion.div>
+
       {/* Subtle Background Glow */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           className="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-taupe rounded-full opacity-[0.03] blur-3xl"
           animate={{
-            scale: [1, 1.2, 1],
+            scale: [1, 1.1, 1],
             opacity: [0.03, 0.05, 0.03],
           }}
           transition={{
@@ -22,12 +54,12 @@ export default function Hero() {
 
       <div className="relative max-w-7xl mx-auto w-full">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
-          {/* LEFT: F-Pattern Content (8 columns) */}
+          {/* LEFT: F-Pattern Content (12 columns - full width now) */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="lg:col-span-8 space-y-8"
+            className="lg:col-span-12 space-y-2"
           >
             {/* Main Headline - Left Aligned */}
             <div className="space-y-4">
@@ -82,64 +114,14 @@ export default function Hero() {
               </motion.a>
             </motion.div>
           </motion.div>
-
-          {/* RIGHT: SOTD Score Box (4 columns) */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="lg:col-span-4 flex justify-end"
-          >
-            <motion.div 
-              className="inline-flex flex-col bg-white border border-charcoal/10 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
-              whileHover={{ y: -4 }}
-            >
-              {/* Top Section */}
-              <div className="bg-charcoal px-8 py-4 text-center border-b border-charcoal/5">
-                <motion.p 
-                  className="text-milk font-bold text-sm tracking-[0.2em] uppercase"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.7 }}
-                >
-                  SOTD
-                </motion.p>
-              </div>
-              
-              {/* Bottom Section */}
-              <div className="px-12 py-8 text-center bg-gradient-to-b from-white to-oat/20">
-                <motion.div
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ delay: 0.8, type: "spring", stiffness: 200 }}
-                  className="flex items-baseline justify-center gap-1"
-                >
-                  <span className="text-6xl font-display font-bold text-charcoal tracking-tight">
-                    7.87
-                  </span>
-                  <span className="text-2xl font-light text-mocha mb-1">
-                    /10
-                  </span>
-                </motion.div>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 1 }}
-                  className="text-xs text-taupe mt-3 font-light tracking-wide"
-                >
-                  Site of the Day
-                </motion.p>
-              </div>
-            </motion.div>
-          </motion.div>
         </div>
 
         {/* Scroll Indicator - Minimal */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: 10 }}
           transition={{ delay: 1.2 }}
-          className="absolute bottom-12 left-6 lg:left-0"
+          className="absolute left-1/2 top-[450px] transform -translate-x-1/2 -translate-y-1/2"
         >
           <motion.div
             className="w-[1px] h-20 bg-gradient-to-b from-transparent via-taupe/40 to-transparent mx-auto mb-3"

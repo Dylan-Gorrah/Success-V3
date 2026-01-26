@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "homepage": "https://dylan-gorrah.github.io/success-v2",
+  "homepage": "https://dylan-gorrah.github.io/Success-V3",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

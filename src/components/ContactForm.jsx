@@ -64,8 +64,15 @@ Reply to start conversation!`.trim()
     }, 1000)
   }
 
+  const openWhatsAppDirect = () => {
+    const message = "Hi! I'm interested in your services and would like to discuss a project."
+    const whatsappNumber = '27677020221'
+    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
+    window.open(whatsappURL, '_blank')
+  }
+
   return (
-    <section id="contact" className="relative py-32 px-6 bg-milk overflow-hidden" ref={ref}>
+    <section id="contact" className="relative py-32 px-6 bg-milk overflow-hidden snap-section" ref={ref}>
       <div className="relative max-w-7xl mx-auto">
         {/* Header */}
         <motion.div

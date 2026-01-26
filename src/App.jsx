@@ -22,7 +22,7 @@ function App() {
       <ScrollingMarquee />
       <Navigation />
       
-      <main className="relative">
+      <main className="relative scroll-snap-container">
         <Hero />
         <Services />
         <Projects />
