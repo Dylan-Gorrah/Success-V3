@@ -252,35 +252,34 @@ img[loading="lazy"] {
    SCROLL SNAP UTILITIES
    ============================================ */
 
-/* Smooth scroll snap for main sections */
-html {
-  scroll-behavior: smooth;
-  scroll-snap-type: y proximity;
+/* Smooth scroll behavior with momentum - Desktop Only */
+@media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+  html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y proximity;
+    scroll-padding-top: 80px; /* Account for fixed navigation */
+  }
 }
 
-/* Scroll snap container for sections */
-.scroll-snap-container {
-  scroll-snap-type: y proximity;
-  scroll-behavior: smooth;
+/* Scroll snap container for sections - Desktop Only */
+@media (min-width: 1024px) {
+  .scroll-snap-container {
+    scroll-snap-type: y proximity;
+    scroll-behavior: smooth;
+  }
 }
 
-/* Snap points for sections */
-.snap-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+/* Snap points for sections - Desktop Only */
+@media (min-width: 1024px) {
+  .snap-section {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
 }
 
 /* Prevent snap on navigation and footer */
 .no-snap {
   scroll-snap-align: none;
-}
-
-/* Smooth scroll behavior with momentum */
-@media (prefers-reduced-motion: no-preference) {
-  .scroll-snap-container {
-    scroll-behavior: smooth;
-    scroll-padding-top: 80px; /* Account for fixed navigation */
-  }
 }
 
 /* Fallback for browsers that don't support scroll snap */
