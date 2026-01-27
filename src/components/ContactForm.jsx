@@ -16,18 +16,45 @@ export default function ContactForm() {
   const [isHelperExpanded, setIsHelperExpanded] = useState(false)
   
   const ref = useRef(null)
+  const helperTimerRef = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
-  // Show helper button after 4 seconds
-  useEffect(() => {
-    if (!isInView) return
-    
-    const timer = setTimeout(() => {
+  const startHelperTimer = () => {
+    if (helperTimerRef.current || showHelper) return
+    helperTimerRef.current = setTimeout(() => {
       setShowHelper(true)
-    }, 4000)
+      helperTimerRef.current = null
+    }, 5500)
+  }
 
-    return () => clearTimeout(timer)
-  }, [isInView])
+  const clearHelperTimer = () => {
+    if (helperTimerRef.current) {
+      clearTimeout(helperTimerRef.current)
+      helperTimerRef.current = null
+    }
+  }
+
+  useEffect(() => {
+    return () => clearHelperTimer()
+  }, [])
+
+  useEffect(() => {
+    if (isInView && !showHelper) {
+      startHelperTimer()
+    } else if (!isInView) {
+      clearHelperTimer()
+    }
+  }, [isInView, showHelper])
+
+  const handleFormFocus = () => {
+    startHelperTimer()
+  }
+
+  const handleFormBlur = (event) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      clearHelperTimer()
+    }
+  }
 
   const handleChange = (e) => {
     setFormData({
@@ -40,19 +67,25 @@ export default function ContactForm() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    const message = `NEW PROJECT INQUIRY
+    const safeValue = (value, fallback = 'Not provided') => (value?.trim() ? value : fallback)
 
-Name: ${formData.name}
-Email: ${formData.email}
-Phone: ${formData.phone}
-Project Type: ${formData.projectType}
-Budget: ${formData.budget}
+    const message = `*NEW PROJECT REQUEST*
+------------------------------
 
-MESSAGE:
-${formData.message}
+👤 *Founder Details*
+• Full Name: ${safeValue(formData.name)}
+• Email Address: ${safeValue(formData.email)}
+• Phone Number: ${safeValue(formData.phone)}
 
----
-Reply to start conversation!`.trim()
+📁 *Project Info*
+• Project Type: ${safeValue(formData.projectType, 'Let\'s discuss')}
+• Budget Range: ${safeValue(formData.budget, 'Let\'s discuss')}
+
+📝 *Project Details*
+${safeValue(formData.message, 'No notes yet — excited to share live.')}
+
+------------------------------
+Sent via Bread & Butter Projects Form`.trim()
 
     const whatsappNumber = '27677020221'
     const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`
@@ -74,6 +107,21 @@ Reply to start conversation!`.trim()
   return (
     <section id="contact" className="relative py-32 px-6 bg-milk overflow-hidden snap-section" ref={ref}>
       <div className="relative max-w-7xl mx-auto">
+        {/* Highlight Block */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6 }}
+          className="mb-10"
+        >
+          <div className="max-w-3xl mx-auto bg-[#dfdde2] border border-white/50 rounded-2xl px-8 py-7 shadow-[0_35px_80px_rgba(15,15,15,0.18)] text-center">
+            <p className="text-xs uppercase tracking-[0.6em] text-taupe">Want to see our work?</p>
+            <p className="text-base text-charcoal mt-3">
+              Talk to us and we’ll spin up a <span className="font-semibold text-mocha">free</span> demo of your idea by tomorrow. Just browsing our talent?
+            </p>
+          </div>
+        </motion.div>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -101,29 +149,29 @@ Reply to start conversation!`.trim()
           >
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-oat/30 flex items-center justify-center flex-shrink-0 border border-charcoal/5">
-                  <MessageCircle className="text-mocha" size={24} strokeWidth={1.5} />
+                <div className="w-10 h-10 rounded-lg bg-oat/40 flex items-center justify-center flex-shrink-0 border border-charcoal/10">
+                  <MessageCircle className="text-mocha" size={20} strokeWidth={1.5} />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-display font-semibold text-charcoal mb-2">
+                  <h3 className="text-xl font-display font-semibold text-charcoal mb-1">
                     Quick Response
                   </h3>
-                  <p className="text-mocha font-light leading-relaxed">
-                    We typically respond within 1 hour during business hours.
+                  <p className="text-mocha/80 text-sm font-light leading-relaxed">
+                    We typically respond within 1 hour.
                   </p>
                 </div>
               </div>
 
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl bg-oat/30 flex items-center justify-center flex-shrink-0 border border-charcoal/5">
-                  <Check className="text-mocha" size={24} strokeWidth={1.5} />
+                <div className="w-10 h-10 rounded-lg bg-oat/40 flex items-center justify-center flex-shrink-0 border border-charcoal/10">
+                  <Check className="text-mocha" size={20} strokeWidth={1.5} />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-display font-semibold text-charcoal mb-2">
+                  <h3 className="text-xl font-display font-semibold text-charcoal mb-1">
                     Free Consultation
                   </h3>
-                  <p className="text-mocha font-light leading-relaxed">
-                    Get expert advice and a detailed project quote at no cost.
+                  <p className="text-mocha/80 text-sm font-light leading-relaxed">
+                    Receive a demo of your idea by tomorrow—free.
                   </p>
                 </div>
               </div>
@@ -152,14 +200,16 @@ Reply to start conversation!`.trim()
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 1, delay: 0.2 }}
             onSubmit={handleSubmit}
+            onFocusCapture={handleFormFocus}
+            onBlurCapture={handleFormBlur}
             className="lg:col-span-7"
           >
-            <div className="bg-white border border-charcoal/10 rounded-2xl p-8 shadow-lg">
+            <div className="bg-[#dfdde2] text-charcoal border border-white/50 rounded-2xl p-8 shadow-[0_40px_90px_rgba(10,10,10,0.25)]">
               <div className="space-y-5">
                 {/* Name & Email Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="name" className="block text-charcoal text-sm font-medium mb-2">
+                    <label htmlFor="name" className="block text-charcoal/80 text-sm font-medium mb-2">
                       Full Name
                     </label>
                     <input
@@ -170,11 +220,11 @@ Reply to start conversation!`.trim()
                       onChange={handleChange}
                       placeholder="John Doe"
                       required
-                      className="w-full bg-oat/20 border border-charcoal/10 rounded-lg px-4 py-3 text-charcoal text-sm placeholder-taupe/50 focus:border-mocha focus:ring-1 focus:ring-mocha/20 focus:outline-none transition-all duration-200 focus:bg-white"
+                      className="w-full bg-white/50 border border-charcoal/20 rounded-lg px-4 py-3 text-charcoal text-sm placeholder-charcoal/40 focus:border-charcoal focus:ring-1 focus:ring-charcoal/20 focus:outline-none transition-all duration-200"
                     />
                   </div>
                   <div>
-                    <label htmlFor="email" className="block text-charcoal text-sm font-medium mb-2">
+                    <label htmlFor="email" className="block text-charcoal/80 text-sm font-medium mb-2">
                       Email Address
                     </label>
                     <input
@@ -192,7 +242,7 @@ Reply to start conversation!`.trim()
 
                 {/* Phone */}
                 <div>
-                  <label htmlFor="phone" className="block text-charcoal text-sm font-medium mb-2">
+                  <label htmlFor="phone" className="block text-charcoal/80 text-sm font-medium mb-2">
                     Phone Number
                   </label>
                   <input
@@ -210,7 +260,7 @@ Reply to start conversation!`.trim()
                 {/* Project Type & Budget Row */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label htmlFor="projectType" className="block text-charcoal text-sm font-medium mb-2">
+                    <label htmlFor="projectType" className="block text-charcoal/80 text-sm font-medium mb-2">
                       Project Type
                     </label>
                     <select
@@ -219,7 +269,7 @@ Reply to start conversation!`.trim()
                       value={formData.projectType}
                       onChange={handleChange}
                       required
-                      className="w-full bg-oat/20 border border-charcoal/10 rounded-lg px-4 py-3 text-charcoal text-sm focus:border-mocha focus:ring-1 focus:ring-mocha/20 focus:outline-none transition-all duration-200 focus:bg-white"
+                      className="w-full bg-white/60 border border-charcoal/20 rounded-lg px-4 py-3 text-charcoal text-sm focus:border-charcoal focus:ring-1 focus:ring-charcoal/20 focus:outline-none transition-all duration-200"
                     >
                       <option value="">Select project type</option>
                       <option value="Website">Website</option>
@@ -229,7 +279,7 @@ Reply to start conversation!`.trim()
                     </select>
                   </div>
                   <div>
-                    <label htmlFor="budget" className="block text-charcoal text-sm font-medium mb-2">
+                    <label htmlFor="budget" className="block text-charcoal/80 text-sm font-medium mb-2">
                       Budget Range
                     </label>
                     <select
@@ -237,7 +287,7 @@ Reply to start conversation!`.trim()
                       name="budget"
                       value={formData.budget}
                       onChange={handleChange}
-                      className="w-full bg-oat/20 border border-charcoal/10 rounded-lg px-4 py-3 text-charcoal text-sm focus:border-mocha focus:ring-1 focus:ring-mocha/20 focus:outline-none transition-all duration-200 focus:bg-white"
+                      className="w-full bg-white/60 border border-charcoal/20 rounded-lg px-4 py-3 text-charcoal text-sm focus:border-charcoal focus:ring-1 focus:ring-charcoal/20 focus:outline-none transition-all duration-200"
                     >
                       <option value="">Let's discuss</option>
                       <option value="R600 - R2,000">R600 - R2,000</option>
@@ -250,7 +300,7 @@ Reply to start conversation!`.trim()
 
                 {/* Message */}
                 <div>
-                  <label htmlFor="message" className="block text-charcoal text-sm font-medium mb-2">
+                  <label htmlFor="message" className="block text-charcoal/80 text-sm font-medium mb-2">
                     Project Details
                   </label>
                   <textarea
@@ -258,10 +308,10 @@ Reply to start conversation!`.trim()
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Tell us about your project, goals, and any specific requirements..."
+                    placeholder="Tell us about your project goals and dreams."
                     required
                     rows="4"
-                    className="w-full bg-oat/20 border border-charcoal/10 rounded-lg px-4 py-3 text-charcoal text-sm placeholder-taupe/50 focus:border-mocha focus:ring-1 focus:ring-mocha/20 focus:outline-none transition-all duration-200 resize-none focus:bg-white"
+                    className="w-full bg-white/50 border border-charcoal/20 rounded-lg px-4 py-3 text-charcoal text-sm placeholder-charcoal/40 focus:border-charcoal focus:ring-1 focus:ring-charcoal/20 focus:outline-none transition-all duration-200 resize-none"
                   />
                 </div>
 
@@ -310,89 +360,81 @@ Reply to start conversation!`.trim()
         </div>
       </div>
 
-      {/* "Confused?" Helper Button */}
+      {/* "Confused?" Helper Button & Modal */}
       <AnimatePresence>
-        {showHelper && (
-          <motion.div
-            initial={{ x: 400 }}
-            animate={{ x: 0 }}
-            exit={{ x: 400 }}
-            transition={{ type: "spring", stiffness: 200, damping: 25 }}
-            className="fixed bottom-8 right-8 z-50"
+        {showHelper && !isHelperExpanded && (
+          <motion.button
+            initial={{ x: 80, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 80, opacity: 0 }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+            onClick={() => setIsHelperExpanded(true)}
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            className="fixed bottom-8 right-6 z-50 flex items-center gap-3 px-4 py-3 rounded-full bg-white/80 text-charcoal shadow-lg border border-charcoal/10 backdrop-blur"
           >
-            <AnimatePresence>
-              {!isHelperExpanded ? (
-                // Collapsed Button
-                <motion.button
-                  key="collapsed"
-                  onClick={() => setIsHelperExpanded(true)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="bg-charcoal text-milk px-6 py-4 rounded-full shadow-2xl border border-charcoal/10 hover:bg-mocha transition-colors duration-300"
-                >
-                  <div className="flex flex-col items-start">
-                    <span className="font-semibold text-sm">Confused?</span>
-                    <span className="text-xs opacity-75 font-light">Click me</span>
-                  </div>
-                </motion.button>
-              ) : (
-                // Expanded Card
-                <motion.div
-                  key="expanded"
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  className="bg-white border border-charcoal/10 rounded-2xl shadow-2xl p-6 max-w-sm backdrop-blur-sm"
-                  style={{ 
-                    backdropFilter: 'blur(20px)',
-                  }}
-                >
-                  {/* Close Button */}
-                  <button
-                    onClick={() => setIsHelperExpanded(false)}
-                    className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full hover:bg-oat/30 transition-colors"
-                  >
-                    <X size={16} className="text-mocha" />
-                  </button>
-
-                  {/* Content */}
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-display font-semibold text-charcoal pr-8">
-                      Need Help?
-                    </h3>
-                    <p className="text-sm text-mocha font-light leading-relaxed">
-                      If pricing or anything is confusing, don't worry! You can contact me directly on WhatsApp by filling in form above, or click the button below to chat now.
-                    </p>
-                    
-                    <motion.button
-                      onClick={openWhatsAppDirect}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full bg-[#25D366] hover:bg-[#20BD5A] text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors duration-200 flex items-center justify-center gap-2 shadow-md"
-                    >
-                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                      </svg>
-                      Chat on WhatsApp
-                    </motion.button>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
+            <div className="w-9 h-9 rounded-full bg-charcoal/5 border border-charcoal/10 flex items-center justify-center">
+              <MessageCircle size={16} />
+            </div>
+            <div className="text-left">
+              <p className="text-[10px] uppercase tracking-[0.25em] text-charcoal/70">Need clarity?</p>
+              <p className="text-sm font-semibold">Confused? Click me</p>
+            </div>
+          </motion.button>
         )}
       </AnimatePresence>
 
-      {/* Backdrop Blur when helper is expanded */}
       <AnimatePresence>
         {isHelperExpanded && (
           <motion.div
+            key="helper-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-charcoal/45 backdrop-blur-md"
             onClick={() => setIsHelperExpanded(false)}
-            className="fixed inset-0 bg-charcoal/20 backdrop-blur-sm z-40"
-          />
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.92, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 200, damping: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="relative max-w-lg w-full bg-white/90 border border-white/40 rounded-3xl shadow-2xl p-8 backdrop-blur-xl"
+            >
+              <button
+                onClick={() => setIsHelperExpanded(false)}
+                className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-charcoal/5 hover:bg-charcoal/10 transition-colors"
+              >
+                <X size={16} className="text-charcoal" />
+              </button>
+
+              <div className="space-y-5">
+                <div className="inline-flex gap-3">
+                  <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.25em] bg-charcoal/5 text-charcoal/70 border border-charcoal/10">24/7</span>
+                  <span className="px-3 py-1 rounded-full text-[11px] uppercase tracking-[0.25em] bg-charcoal/5 text-charcoal/70 border border-charcoal/10">Replies in ~10 min</span>
+                </div>
+                <h3 className="text-3xl font-display font-semibold text-charcoal">
+                  Hey,👋
+                </h3>
+                <p className="text-base text-mocha leading-relaxed font-light">
+                  If anything's unclear or you just want to chat about pricing, I'm here to help! Just click the button below to message me on WhatsApp.
+                </p>
+
+                <motion.button
+                  onClick={openWhatsAppDirect}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full bg-[#25D366] hover:bg-[#20BD5A] text-white px-6 py-4 rounded-2xl font-semibold text-base transition-colors duration-200 flex items-center justify-center gap-3 shadow-lg"
+                >
+                  <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+                  </svg>
+                  Chat on WhatsApp
+                </motion.button>
+              </div>
+            </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </section>

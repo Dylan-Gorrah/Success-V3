@@ -49,16 +49,19 @@ export default function Projects() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [hoveredCard, setHoveredCard] = useState(null)
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: '-100px' })
+  const sectionRef = useRef(null)
+  const hasEnteredView = useInView(sectionRef, { once: true, margin: '-100px' })
+  const isSectionVisible = useInView(sectionRef, { amount: 0.4 })
 
   useEffect(() => {
-    if (!isAutoPlaying) return
+    if (!isSectionVisible || !isAutoPlaying) return
+
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % projects.length)
     }, 5000)
+
     return () => clearInterval(interval)
-  }, [isAutoPlaying])
+  }, [isSectionVisible, isAutoPlaying])
 
   const handlePrevious = () => {
     setIsAutoPlaying(false)
@@ -88,19 +91,23 @@ export default function Projects() {
   const nextProject = getProject(1)
 
   return (
-    <section id="projects" className="py-16 md:py-20 px-4 md:px-6 bg-oat/30 snap-section" ref={ref}>
+    <section
+      id="projects"
+      className="py-14 sm:py-16 md:py-20 px-4 md:px-6 bg-oat/30 snap-section"
+      ref={sectionRef}
+    >
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          animate={hasEnteredView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="mb-6 md:mb-12 text-center"
+          className="mb-8 md:mb-12 text-center"
         >
-          <h2 className="text-3xl md:text-6xl font-display font-bold text-charcoal mb-3 md:mb-5 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-display font-bold text-charcoal mb-3 md:mb-5 tracking-tight">
             Selected Work
           </h2>
-          <p className="text-base md:text-xl text-mocha max-w-2xl mx-auto font-light">
+          <p className="text-sm sm:text-base md:text-xl text-mocha max-w-2xl mx-auto font-light">
             Real projects. Real results. Click to view live.
           </p>
         </motion.div>
@@ -249,7 +256,7 @@ export default function Projects() {
           {/* Right: Phone Mockup (4 columns) */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            animate={hasEnteredView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="lg:col-span-4"
           >
@@ -292,7 +299,7 @@ export default function Projects() {
 
         {/* Mobile/Tablet: Compact Carousel */}
         <div className="lg:hidden">
-          <div className="max-w-md mx-auto">
+          <div className="max-w-md mx-auto space-y-4">
             <AnimatePresence mode="wait">
               <motion.a
                 key={currentIndex}
@@ -307,10 +314,10 @@ export default function Projects() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.4 }}
-                className="block bg-white rounded-lg shadow-lg overflow-hidden"
+                className="block bg-white rounded-2xl shadow-lg overflow-hidden"
               >
                 {/* Image */}
-                <div className="relative h-40">
+                <div className="relative h-48">
                   <img
                     src={currentProject.image}
                     alt={currentProject.title}
@@ -320,17 +327,17 @@ export default function Projects() {
                 </div>
 
                 {/* Content */}
-                <div className="p-4">
-                  <p className="text-xs text-taupe mb-1 font-semibold uppercase tracking-wider">
+                <div className="p-5 space-y-2">
+                  <p className="text-[11px] text-taupe font-semibold uppercase tracking-[0.3em]">
                     {currentProject.client}
                   </p>
-                  <h3 className="text-lg font-display font-bold text-charcoal mb-1">
+                  <h3 className="text-2xl font-display font-bold text-charcoal">
                     {currentProject.title}
                   </h3>
-                  <p className="text-sm text-mocha font-light mb-2">
+                  <p className="text-base text-mocha font-light">
                     {currentProject.result}
                   </p>
-                  <p className="text-xs text-taupe/70 leading-relaxed italic">
+                  <p className="text-sm text-taupe/80 leading-relaxed italic">
                     {currentProject.aesthetic}
                   </p>
                 </div>
@@ -338,66 +345,43 @@ export default function Projects() {
             </AnimatePresence>
 
             {/* Mobile Thumbnails */}
-            <div className="flex items-center justify-center gap-2 mt-4">
-              <div className="flex gap-2 px-3 py-2 bg-white rounded-full shadow-sm">
-                {[prevProject, nextProject].map((project, idx) => (
-                  <a
-                    key={idx}
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-lg overflow-hidden opacity-50 hover:opacity-100 transition-opacity relative group"
-                  >
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-charcoal/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <ExternalLink size={10} className="text-milk" />
-                    </div>
-                  </a>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <p className="text-xs text-mocha/70">
+                Swipe the card or use the arrows below
+              </p>
+              <div className="flex space-x-2">
+                {projects.map((_, index) => (
+                  <motion.button
+                    key={index}
+                    onClick={() => {
+                      setCurrentIndex(index)
+                      setIsAutoPlaying(false)
+                    }}
+                    whileHover={{ scale: 1.2 }}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      index === currentIndex ? 'w-6 bg-charcoal' : 'w-2 bg-taupe'
+                    }`}
+                  />
                 ))}
               </div>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handlePrevious}
+                className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white text-charcoal rounded-full shadow-md hover:shadow-lg transition-shadow"
+              >
+                <ChevronLeft size={18} />
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handleNext}
+                className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white text-charcoal rounded-full shadow-md hover:shadow-lg transition-shadow"
+              >
+                <ChevronRight size={18} />
+              </motion.button>
             </div>
           </div>
-        </div>
-
-        {/* Navigation */}
-        <div className="flex items-center justify-center space-x-3 mt-8">
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={handlePrevious}
-            className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white text-charcoal rounded-full shadow-md hover:shadow-lg transition-shadow"
-          >
-            <ChevronLeft size={18} />
-          </motion.button>
-          
-          <div className="flex space-x-2">
-            {projects.map((_, index) => (
-              <motion.button
-                key={index}
-                onClick={() => {
-                  setCurrentIndex(index)
-                  setIsAutoPlaying(false)
-                }}
-                whileHover={{ scale: 1.2 }}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === currentIndex ? 'w-6 bg-charcoal' : 'w-2 bg-taupe'
-                }`}
-              />
-            ))}
-          </div>
-          
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={handleNext}
-            className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white text-charcoal rounded-full shadow-md hover:shadow-lg transition-shadow"
-          >
-            <ChevronRight size={18} />
-          </motion.button>
         </div>
       </div>
     </section>

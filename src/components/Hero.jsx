@@ -3,35 +3,23 @@ import { ArrowRight } from 'lucide-react'
 
 export default function Hero() {
   return (
-    <section id="hero" className="relative min-h-screen flex items-center px-6 pt-32 pb-20 snap-section">
-      {/* SOTD Score Box - Independent Background Element */}
+    <section id="hero" className="relative min-h-[90vh] sm:min-h-screen flex items-center px-4 sm:px-6 pt-24 pb-16 sm:pt-32 sm:pb-20 snap-section">
+      {/* Floating Price Card */}
       <motion.div
         initial={{ opacity: 0, x: 30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        className="absolute top-[7.5rem] right-1 sm:right-6 md:right-8 lg:right-10 xl:right-10 z-10 scale-69"
+        className="absolute top-32 md:top-32 right-6 sm:right-10 md:right-24 lg:right-28 z-10 w-32 sm:w-40 md:w-48"
       >
-        <div className="inline-flex flex-col bg-white border border-charcoal rounded-lg overflow-hidden">
-          {/* Top Section */}
+        <div className="inline-flex flex-col bg-white border border-charcoal rounded-2xl shadow-lg overflow-hidden">
           <div className="bg-charcoal px-3 py-1.5 text-center border-b border-charcoal/5">
-            <p className="text-milk font-bold text-xs tracking-[0.2em] uppercase">
-              From
-            </p>
+            <p className="text-milk font-bold text-[11px] tracking-[0.25em] uppercase">From</p>
           </div>
-          
-          {/* Bottom Section */}
           <div className="px-3.5 py-3 text-center bg-gradient-to-b from-white to-oat/20">
             <div className="flex items-baseline justify-center gap-1">
-              <span className="text-2xl font-display font-bold text-charcoal tracking-tight">
-                R600
-              </span>
-              <span className="text-sm font-light text-mocha mb-1">
-                
-              </span>
+              <span className="text-2xl font-display font-bold text-charcoal tracking-tight">R600</span>
             </div>
-            <p className="text-xs text-taupe mt-3 font-light tracking-wide">
-              Contact Now!
-            </p>
+            <p className="text-[11px] text-taupe mt-3 font-light tracking-[0.25em]">Contact Now!</p>
           </div>
         </div>
       </motion.div>
@@ -59,37 +47,37 @@ export default function Hero() {
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="lg:col-span-12 space-y-2"
+            className="lg:col-span-12 space-y-6"
           >
-            {/* Main Headline - Left Aligned */}
-            <div className="space-y-4">
-              <motion.h1 
-                className="text-7xl md:text-8xl lg:text-9xl font-display font-bold text-charcoal leading-[0.9] tracking-tight"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.1 }}
-              >
-                We Build
-              </motion.h1>
-              <motion.h1 
-                className="text-7xl md:text-8xl lg:text-9xl font-display font-bold text-mocha leading-[0.9] tracking-tight"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                Digital Products
-              </motion.h1>
+            <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
+              {/* Main Headline - Left Aligned */}
+              <div className="space-y-4 max-w-3xl pr-28 sm:pr-0">
+                <motion.h1 
+                  className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-bold text-charcoal leading-[0.95] tracking-tight"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.1 }}
+                >
+                  We Build
+                </motion.h1>
+                <motion.h1 
+                  className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-display font-bold text-mocha leading-[0.95] tracking-tight"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                >
+                  Digital Products
+                </motion.h1>
+                <motion.p 
+                  className="text-lg sm:text-xl md:text-2xl text-mocha leading-relaxed max-w-xl font-light"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                >
+                  Websites. Systems. Apps. Built with precision and designed for growth.
+                </motion.p>
+              </div>
             </div>
-            
-            {/* Subheadline - Left Aligned */}
-            <motion.p 
-              className="text-xl md:text-2xl text-mocha leading-relaxed max-w-xl font-light"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              Websites. Systems. Apps. Built with precision and designed for growth.
-            </motion.p>
 
             {/* CTA Button */}
             <motion.div
@@ -121,7 +109,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 10 }}
           transition={{ delay: 1.2 }}
-          className="absolute left-1/2 top-[450px] transform -translate-x-1/2 -translate-y-1/2"
+          className="hidden md:block absolute left-1/2 top-[450px] transform -translate-x-1/2 -translate-y-1/2"
         >
           <motion.div
             className="w-[1px] h-20 bg-gradient-to-b from-transparent via-taupe/40 to-transparent mx-auto mb-3"

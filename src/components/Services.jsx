@@ -191,7 +191,7 @@ export default function Services() {
       <section 
         id="services" 
         ref={ref}
-        className="relative py-32 px-6 bg-charcoal overflow-hidden snap-section"
+        className="relative pt-24 pb-16 sm:py-32 px-4 sm:px-6 bg-charcoal overflow-hidden snap-section"
       >
         {/* Background Animations */}
         <FireflyParticles />
@@ -205,7 +205,7 @@ export default function Services() {
             transition={{ duration: 0.8 }}
             className="mb-20 text-center"
           >
-            <h2 className="text-5xl md:text-7xl font-display font-bold text-milk mb-6 tracking-tight">
+            <h2 className="text-4xl sm:text-5xl md:text-7xl font-display font-bold text-milk mb-6 tracking-tight">
               What We Do
             </h2>
             <p className="text-xl text-oat/90 max-w-2xl mx-auto font-light">
@@ -247,7 +247,7 @@ export default function Services() {
                     </div>
 
                     {/* Points */}
-                    <div className="space-y-2 pl-16">
+                    <div className="space-y-2 pl-12 sm:pl-16">
                       {service.points.map((point, i) => (
                         <p key={i} className="text-oat/90 text-sm leading-relaxed flex items-start">
                           <span className="text-taupe mr-2 flex-shrink-0">•</span>
