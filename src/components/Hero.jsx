@@ -9,7 +9,7 @@ export default function Hero() {
         initial={{ opacity: 0, x: 30 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, delay: 0.3 }}
-        className="absolute top-32 md:top-32 right-6 sm:right-10 md:right-24 lg:right-28 z-10 w-32 sm:w-40 md:w-48"
+        className="hidden sm:block absolute top-24 sm:top-28 md:top-32 right-6 sm:right-10 md:right-24 lg:right-28 z-10 w-28 sm:w-36 md:w-48"
       >
         <div className="inline-flex flex-col bg-white border border-charcoal rounded-2xl shadow-lg overflow-hidden">
           <div className="bg-charcoal px-3 py-1.5 text-center border-b border-charcoal/5">
@@ -51,7 +51,7 @@ export default function Hero() {
           >
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
               {/* Main Headline - Left Aligned */}
-              <div className="space-y-4 max-w-3xl pr-28 sm:pr-0">
+              <div className="space-y-4 max-w-3xl pr-0 sm:pr-12 lg:pr-20">
                 <motion.h1 
                   className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-display font-bold text-charcoal leading-[0.95] tracking-tight"
                   initial={{ opacity: 0, y: 20 }}
@@ -76,6 +76,12 @@ export default function Hero() {
                 >
                   Websites. Systems. Apps. Built with precision and designed for growth.
                 </motion.p>
+
+                {/* Mobile price chip */}
+                <div className="sm:hidden inline-flex items-center gap-2 self-start bg-white/95 border border-charcoal/10 px-4 py-2 rounded-full text-sm font-semibold text-charcoal shadow-sm">
+                  <span className="uppercase tracking-[0.2em] text-[11px] text-mocha">From</span>
+                  <span className="text-base font-display font-bold text-charcoal">R600</span>
+                </div>
               </div>
             </div>
 

@@ -252,8 +252,8 @@ img[loading="lazy"] {
    SCROLL SNAP UTILITIES
    ============================================ */
 
-/* Smooth scroll behavior with momentum - Desktop Only */
-@media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+/* Smooth scroll behavior with momentum - All devices */
+@media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
     scroll-snap-type: y proximity;
@@ -261,20 +261,16 @@ img[loading="lazy"] {
   }
 }
 
-/* Scroll snap container for sections - Desktop Only */
-@media (min-width: 1024px) {
-  .scroll-snap-container {
-    scroll-snap-type: y proximity;
-    scroll-behavior: smooth;
-  }
+/* Scroll snap container for sections - All devices */
+.scroll-snap-container {
+  scroll-snap-type: y proximity;
+  scroll-behavior: smooth;
 }
 
-/* Snap points for sections - Desktop Only */
-@media (min-width: 1024px) {
-  .snap-section {
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-  }
+/* Snap points for sections - All devices */
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 /* Prevent snap on navigation and footer */

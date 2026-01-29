@@ -251,6 +251,41 @@ export default function Projects() {
                 </div>
               </motion.a>
             </div>
+            
+            {/* Desktop Navigation Controls */}
+            <div className="flex items-center justify-center gap-4 mt-6">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handlePrevious}
+                className="w-12 h-12 flex items-center justify-center bg-white text-charcoal rounded-full shadow-md hover:shadow-lg transition-shadow z-10"
+              >
+                <ChevronLeft size={20} />
+              </motion.button>
+              <div className="flex space-x-2">
+                {projects.map((_, index) => (
+                  <motion.button
+                    key={index}
+                    onClick={() => {
+                      setCurrentIndex(index)
+                      setIsAutoPlaying(false)
+                    }}
+                    whileHover={{ scale: 1.2 }}
+                    className={`h-2 rounded-full transition-all duration-300 ${
+                      index === currentIndex ? 'w-6 bg-charcoal' : 'w-2 bg-taupe'
+                    }`}
+                  />
+                ))}
+              </div>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handleNext}
+                className="w-12 h-12 flex items-center justify-center bg-white text-charcoal rounded-full shadow-md hover:shadow-lg transition-shadow z-10"
+              >
+                <ChevronRight size={20} />
+              </motion.button>
+            </div>
           </div>
 
           {/* Right: Phone Mockup (4 columns) */}
@@ -344,11 +379,16 @@ export default function Projects() {
               </motion.a>
             </AnimatePresence>
 
-            {/* Mobile Thumbnails */}
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <p className="text-xs text-mocha/70">
-                Swipe the card or use the arrows below
-              </p>
+            {/* Mobile Navigation */}
+            <div className="flex items-center justify-center gap-4 mt-6">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handlePrevious}
+                className="w-12 h-12 flex items-center justify-center bg-white text-charcoal rounded-full shadow-md hover:shadow-lg transition-shadow z-10"
+              >
+                <ChevronLeft size={20} />
+              </motion.button>
               <div className="flex space-x-2">
                 {projects.map((_, index) => (
                   <motion.button
@@ -367,20 +407,15 @@ export default function Projects() {
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                onClick={handlePrevious}
-                className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white text-charcoal rounded-full shadow-md hover:shadow-lg transition-shadow"
-              >
-                <ChevronLeft size={18} />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
                 onClick={handleNext}
-                className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-white text-charcoal rounded-full shadow-md hover:shadow-lg transition-shadow"
+                className="w-12 h-12 flex items-center justify-center bg-white text-charcoal rounded-full shadow-md hover:shadow-lg transition-shadow z-10"
               >
-                <ChevronRight size={18} />
+                <ChevronRight size={20} />
               </motion.button>
             </div>
+            <p className="text-center text-xs text-mocha/70 mt-3">
+              Swipe the card or use the arrows
+            </p>
           </div>
         </div>
       </div>
